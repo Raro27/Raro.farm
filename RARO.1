@@ -1,58 +1,487 @@
-local a,b,c,d,e=game:GetService("Players"),game:GetService("TweenService"),game:GetService("ReplicatedStorage"),game:GetService("CoreGui"),game:GetService("RunService")
-local f=a.LocalPlayer
-local g=f:WaitForChild("PlayerGui")
-local h=d:WaitForChild("DealershipEvents"):WaitForChild("SpawnCar")
-local i,j,k=false,false,{}
-local l,m=35,6
-local n,o
-local function p()n=f.Character or f.CharacterAdded:Wait()o=n:WaitForChild("HumanoidRootPart")end
-p()f.CharacterAdded:Connect(p)
-local q={{inicio=Vector3.new(3473.8,4,2277.7),fim=Vector3.new(3494.6,4,2395.6)},{inicio=Vector3.new(3406.1,4,2439.2),fim=Vector3.new(3494.6,4,2395.6)},{inicio=Vector3.new(3414.6,4,2335.9),fim=Vector3.new(3494.6,4,2395.6)}}
-local r=Instance.new("ScreenGui")r.Name="AFG"r.ResetOnSpawn=false r.Parent=e
-local s=Instance.new("TextLabel",r)
-s.Size=UDim2.new(0,200,0,25)s.Position=UDim2.new(1,-210,1,-35)s.BackgroundColor3=Color3.fromRGB(20,20,20)s.BackgroundTransparency=0.4
-s.Text="BEM VINDO AO RARO FARM"s.Font=Enum.Font.SourceSansBold
-s.TextSize=14 s.TextStrokeTransparency=0.5
-spawn(function()while s do s.TextColor3=Color3.fromHSV(tick()%5/5,1,1)wait(0.1)end end)
-delay(3,function()if s then s:Destroy()end end)
-local t=Instance.new("Frame",r)
-t.Size=UDim2.new(0,220,0,150)t.Position=UDim2.new(0.1,0,0.3,0)t.BackgroundColor3=Color3.fromRGB(20,20,20)t.BackgroundTransparency=0.3
-t.Active=true t.Draggable=true
-local u=Instance.new("TextLabel",t)u.Size=UDim2.new(1,0,0,30)u.BackgroundColor3=Color3.fromRGB(35,35,35)
-u.Text="RARO FARM"u.TextColor3=Color3.fromRGB(255,255,255)u.Font=Enum.Font.SourceSansBold u.TextSize=20
-local v=Instance.new("TextButton",t)v.Size=UDim2.new(0,30,0,30)v.Position=UDim2.new(1,-60,0,0)
-v.BackgroundColor3=Color3.fromRGB(50,50,50)v.Text="-"v.TextColor3=Color3.fromRGB(255,255,255)
-v.Font=Enum.Font.SourceSansBold v.TextSize=24
-local w=Instance.new("TextButton",t)w.Size=UDim2.new(0,30,0,30)w.Position=UDim2.new(1,-30,0,0)
-w.BackgroundColor3=Color3.fromRGB(50,50,50)w.Text="X"w.TextColor3=Color3.fromRGB(255,255,255)
-w.Font=Enum.Font.SourceSansBold w.TextSize=24
-local x=Instance.new("TextButton",t)x.Size=UDim2.new(1,-20,0,40)x.Position=UDim2.new(0,10,0,40)
-x.BackgroundColor3=Color3.fromRGB(0,170,0)x.Text="Iniciar AutoFarm"x.TextColor3=Color3.fromRGB(255,255,255)
-x.Font=Enum.Font.SourceSansBold x.TextSize=20
-local y=Instance.new("TextButton",t)y.Size=UDim2.new(1,-20,0,40)y.Position=UDim2.new(0,10,0,90)
-y.BackgroundColor3=Color3.fromRGB(170,0,0)y.Text="Parar AutoFarm"y.TextColor3=Color3.fromRGB(255,255,255)
-y.Font=Enum.Font.SourceSansBold y.TextSize=20
-local z=Instance.new("TextLabel",t)
-z.Size=UDim2.new(1,0,0,20)z.Position=UDim2.new(0,0,1,-20)z.BackgroundTransparency=1
-z.Text="FEITO POR RARO7ZX"z.Font=Enum.Font.SourceSansBold z.TextSize=14
-spawn(function()while true do z.TextColor3=Color3.fromHSV(tick()%5/5,1,1)wait(0.1)end end)
-local A=false
-v.MouseButton1Click:Connect(function()A=not A t.Size=A and UDim2.new(0,220,0,30)or UDim2.new(0,220,0,150)t.BackgroundTransparency=A and 1 or 0.3
-x.Visible=not A y.Visible=not A z.Visible=not A end)
-w.MouseButton1Click:Connect(function()i=false j=false r:Destroy()end)
-local function B()if not o then return end
-for _,C in pairs(workspace:GetDescendants())do if C:IsA("ProximityPrompt")then
-local D=(o.Position-C.Parent.Position).Magnitude
-if D<=10 and not k[C]then k[C]=true spawn(function()C:InputHoldBegin()end)end end end end
-local function E()for C,F in pairs(k)do if F then spawn(function()C:InputHoldEnd()end)end end k={}end
-local function G()j=true while j do local H=o.Velocity.Magnitude<1 if H then B()else E()end wait(0.3)end E()end
-local function I()if j then return end spawn(G)end
-local function J()j=false end
-local function K(L)if not o then return end local M=(o.Position-L).Magnitude
-local N=M/l local O=b:Create(o,TweenInfo.new(N,Enum.EasingStyle.Linear),{CFrame=CFrame.new(L)})O:Play()O.Completed:Wait()end
-local function P()local Q={"Lixeiro","GaragemLIXEIRO"}h:FireServer(unpack(Q))end
-local function R()if i then return end i=true P()
-spawn(function()while i do for _,S in ipairs(q)do if not i then return end K(S.inicio)wait(m)I()wait(m)J()
-K(S.fim)wait(m)I()wait(m)J()end end end)end
-x.MouseButton1Click:Connect(R)
-y.MouseButton1Click:Connect(function()i=false j=false end)
+-- ServiÃ§os
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local SpawnCarEvent = ReplicatedStorage:WaitForChild("DealershipEvents"):WaitForChild("SpawnCar")
+
+local autoFarmAtivo = false
+local autoPickupAtivo = false
+local promptsAtivos = {}
+
+local velocidade = 35
+local tempoEspera = 6
+
+local Character, HRP
+local function atualizarPersonagem()
+	Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+	HRP = Character:WaitForChild("HumanoidRootPart")
+end
+atualizarPersonagem()
+LocalPlayer.CharacterAdded:Connect(atualizarPersonagem)
+
+local rotas = {
+	{inicio = Vector3.new(3473.8, 4, 2277.7), fim = Vector3.new(3494.6, 4, 2395.6)},
+	{inicio = Vector3.new(3406.1, 4, 2439.2), fim = Vector3.new(3494.6, 4, 2395.6)},
+	{inicio = Vector3.new(3414.6, 4, 2335.9), fim = Vector3.new(3494.6, 4, 2395.6)},
+}
+
+-- GUI
+local gui = Instance.new("ScreenGui")
+gui.Name = "AutoFarmGui"
+gui.ResetOnSpawn = false
+gui.Parent = game:GetService("CoreGui") -- Para Ronix e outros executores, use CoreGui
+
+-- NotificaÃ§Ã£o canto inferior direito
+local mensagem = Instance.new("TextLabel", gui)
+mensagem.Size = UDim2.new(0, 200, 0, 25)
+mensagem.Position = UDim2.new(1, -210, 1, -35)
+mensagem.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+mensagem.BackgroundTransparency = 0.4
+mensagem.Text = "BEM VINDO AO RARO FARM"
+mensagem.Font = Enum.Font.SourceSansBold
+mensagem.TextSize = 14
+mensagem.TextStrokeTransparency = 0.5
+
+spawn(function()
+	while mensagem do
+		mensagem.TextColor3 = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+		wait(0.1)
+	end
+end)
+
+delay(3, function()
+	if mensagem then mensagem:Destroy() end
+end)
+
+-- Painel principal
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 220, 0, 150)
+frame.Position = UDim2.new(0.1, 0, 0.3, 0)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.BackgroundTransparency = 0.3
+frame.Active = true
+frame.Draggable = true
+
+local titulo = Instance.new("TextLabel", frame)
+titulo.Size = UDim2.new(1, 0, 0, 30)
+titulo.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+titulo.Text = "RARO FARM"
+titulo.TextColor3 = Color3.fromRGB(255, 255, 255)
+titulo.Font = Enum.Font.SourceSansBold
+titulo.TextSize = 20
+
+local btnMinimizar = Instance.new("TextButton", frame)
+btnMinimizar.Size = UDim2.new(0, 30, 0, 30)
+btnMinimizar.Position = UDim2.new(1, -60, 0, 0)
+btnMinimizar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+btnMinimizar.Text = "-"
+btnMinimizar.TextColor3 = Color3.fromRGB(255, 255, 255)
+btnMinimizar.Font = Enum.Font.SourceSansBold
+btnMinimizar.TextSize = 24
+
+local btnFechar = Instance.new("TextButton", frame)
+btnFechar.Size = UDim2.new(0, 30, 0, 30)
+btnFechar.Position = UDim2.new(1, -30, 0, 0)
+btnFechar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+btnFechar.Text = "X"
+btnFechar.TextColor3 = Color3.fromRGB(255, 255, 255)
+btnFechar.Font = Enum.Font.SourceSansBold
+btnFechar.TextSize = 24
+
+local btnIniciar = Instance.new("TextButton", frame)
+btnIniciar.Size = UDim2.new(1, -20, 0, 40)
+btnIniciar.Position = UDim2.new(0, 10, 0, 40)
+btnIniciar.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+btnIniciar.Text = "Iniciar AutoFarm"
+btnIniciar.TextColor3 = Color3.fromRGB(255, 255, 255)
+btnIniciar.Font = Enum.Font.SourceSansBold
+btnIniciar.TextSize = 20
+
+local btnParar = Instance.new("TextButton", frame)
+btnParar.Size = UDim2.new(1, -20, 0, 40)
+btnParar.Position = UDim2.new(0, 10, 0, 90)
+btnParar.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
+btnParar.Text = "Parar AutoFarm"
+btnParar.TextColor3 = Color3.fromRGB(255, 255, 255)
+btnParar.Font = Enum.Font.SourceSansBold
+btnParar.TextSize = 20
+
+local creditos = Instance.new("TextLabel", frame)
+creditos.Size = UDim2.new(1, 0, 0, 20)
+creditos.Position = UDim2.new(0, 0, 1, -20)
+creditos.BackgroundTransparency = 1
+creditos.Text = "FEITO POR RARO7ZX"
+creditos.Font = Enum.Font.SourceSansBold
+creditos.TextSize = 14
+
+spawn(function()
+	while true do
+		creditos.TextColor3 = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+		wait(0.1)
+	end
+end)
+
+local minimizado = false
+btnMinimizar.MouseButton1Click:Connect(function()
+	minimizado = not minimizado
+	frame.Size = minimizado and UDim2.new(0, 220, 0, 30) or UDim2.new(0, 220, 0, 150)
+	frame.BackgroundTransparency = minimizado and 1 or 0.3
+	btnIniciar.Visible = not minimizado
+	btnParar.Visible = not minimizado
+	creditos.Visible = not minimizado
+end)
+
+btnFechar.MouseButton1Click:Connect(function()
+	autoFarmAtivo = false
+	autoPickupAtivo = false
+	gui:Destroy()
+end)
+
+-- FunÃ§Ãµes de Auto Pickup do primeiro script
+
+local function ativarPickup()
+	if not HRP then return end
+	for _, prompt in pairs(workspace:GetDescendants()) do
+		if prompt:IsA("ProximityPrompt") then
+			local distancia = (HRP.Position - prompt.Parent.Position).Magnitude
+			if distancia <= 10 and not promptsAtivos[prompt] then
+				promptsAtivos[prompt] = true
+				spawn(function()
+					prompt:InputHoldBegin()
+				end)
+			end
+		end
+	end
+end
+
+local function desativarPickup()
+	for prompt, ativo in pairs(promptsAtivos) do
+		if ativo then
+			spawn(function()
+				prompt:InputHoldEnd()
+			end)
+		end
+	end
+	promptsAtivos = {}
+end
+
+local function monitorarPickup()
+	autoPickupAtivo = true
+	while autoPickupAtivo do
+		local parado = HRP.Velocity.Magnitude < 1
+
+		if parado then
+			ativarPickup()
+		else
+			desativarPickup()
+		end
+		wait(0.3)
+	end
+	desativarPickup()
+end
+
+local function iniciarAutoPickup()
+	if autoPickupAtivo then return end
+	spawn(monitorarPickup)
+end
+
+local function pararAutoPickup()
+	autoPickupAtivo = false
+end
+
+-- MovimentaÃ§Ã£o com Tween
+local function moverPara(pos)
+	if not HRP then return end
+	local distancia = (HRP.Position - pos).Magnitude
+	local duracao = distancia / velocidade
+	local tween = TweenService:Create(HRP, TweenInfo.new(duracao, Enum.EasingStyle.Linear), {CFrame = CFrame.new(pos)})
+	tween:Play()
+	tween.Completed:Wait()
+end
+
+local function spawnarCaminhaoLixeiro()
+	local args = {"Lixeiro", "GaragemLIXEIRO"}
+	SpawnCarEvent:FireServer(unpack(args))
+end
+
+local function AutoFarm()
+	if autoFarmAtivo then return end
+	autoFarmAtivo = true
+	spawnarCaminhaoLixeiro()
+
+	spawn(function()
+		while autoFarmAtivo do
+			for _, rota in ipairs(rotas) do
+				if not autoFarmAtivo then return end
+
+				moverPara(rota.inicio)
+				wait(tempoEspera)
+
+				iniciarAutoPickup()
+				wait(tempoEspera)
+				pararAutoPickup()
+
+				moverPara(rota.fim)
+				wait(tempoEspera)
+
+				iniciarAutoPickup()
+				wait(tempoEspera)
+				pararAutoPickup()
+			end
+		end
+	end)
+end
+
+btnIniciar.MouseButton1Click:Connect(AutoFarm)
+btnParar.MouseButton1Click:Connect(function()
+	autoFarmAtivo = false
+	autoPickupAtivo = false
+end)-- ServiÃ§os
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local SpawnCarEvent = ReplicatedStorage:WaitForChild("DealershipEvents"):WaitForChild("SpawnCar")
+
+local autoFarmAtivo = false
+local autoPickupAtivo = false
+local promptsAtivos = {}
+
+local velocidade = 35
+local tempoEspera = 6
+
+local Character, HRP
+local function atualizarPersonagem()
+	Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+	HRP = Character:WaitForChild("HumanoidRootPart")
+end
+atualizarPersonagem()
+LocalPlayer.CharacterAdded:Connect(atualizarPersonagem)
+
+local rotas = {
+	{inicio = Vector3.new(3473.8, 4, 2277.7), fim = Vector3.new(3494.6, 4, 2395.6)},
+	{inicio = Vector3.new(3406.1, 4, 2439.2), fim = Vector3.new(3494.6, 4, 2395.6)},
+	{inicio = Vector3.new(3414.6, 4, 2335.9), fim = Vector3.new(3494.6, 4, 2395.6)},
+}
+
+-- GUI
+local gui = Instance.new("ScreenGui")
+gui.Name = "AutoFarmGui"
+gui.ResetOnSpawn = false
+gui.Parent = game:GetService("CoreGui") -- Para Ronix e outros executores, use CoreGui
+
+-- NotificaÃ§Ã£o canto inferior direito
+local mensagem = Instance.new("TextLabel", gui)
+mensagem.Size = UDim2.new(0, 200, 0, 25)
+mensagem.Position = UDim2.new(1, -210, 1, -35)
+mensagem.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+mensagem.BackgroundTransparency = 0.4
+mensagem.Text = "BEM VINDO AO RARO FARM"
+mensagem.Font = Enum.Font.SourceSansBold
+mensagem.TextSize = 14
+mensagem.TextStrokeTransparency = 0.5
+
+spawn(function()
+	while mensagem do
+		mensagem.TextColor3 = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+		wait(0.1)
+	end
+end)
+
+delay(3, function()
+	if mensagem then mensagem:Destroy() end
+end)
+
+-- Painel principal
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 220, 0, 150)
+frame.Position = UDim2.new(0.1, 0, 0.3, 0)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.BackgroundTransparency = 0.3
+frame.Active = true
+frame.Draggable = true
+
+local titulo = Instance.new("TextLabel", frame)
+titulo.Size = UDim2.new(1, 0, 0, 30)
+titulo.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+titulo.Text = "RARO FARM"
+titulo.TextColor3 = Color3.fromRGB(255, 255, 255)
+titulo.Font = Enum.Font.SourceSansBold
+titulo.TextSize = 20
+
+local btnMinimizar = Instance.new("TextButton", frame)
+btnMinimizar.Size = UDim2.new(0, 30, 0, 30)
+btnMinimizar.Position = UDim2.new(1, -60, 0, 0)
+btnMinimizar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+btnMinimizar.Text = "-"
+btnMinimizar.TextColor3 = Color3.fromRGB(255, 255, 255)
+btnMinimizar.Font = Enum.Font.SourceSansBold
+btnMinimizar.TextSize = 24
+
+local btnFechar = Instance.new("TextButton", frame)
+btnFechar.Size = UDim2.new(0, 30, 0, 30)
+btnFechar.Position = UDim2.new(1, -30, 0, 0)
+btnFechar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+btnFechar.Text = "X"
+btnFechar.TextColor3 = Color3.fromRGB(255, 255, 255)
+btnFechar.Font = Enum.Font.SourceSansBold
+btnFechar.TextSize = 24
+
+local btnIniciar = Instance.new("TextButton", frame)
+btnIniciar.Size = UDim2.new(1, -20, 0, 40)
+btnIniciar.Position = UDim2.new(0, 10, 0, 40)
+btnIniciar.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+btnIniciar.Text = "Iniciar AutoFarm"
+btnIniciar.TextColor3 = Color3.fromRGB(255, 255, 255)
+btnIniciar.Font = Enum.Font.SourceSansBold
+btnIniciar.TextSize = 20
+
+local btnParar = Instance.new("TextButton", frame)
+btnParar.Size = UDim2.new(1, -20, 0, 40)
+btnParar.Position = UDim2.new(0, 10, 0, 90)
+btnParar.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
+btnParar.Text = "Parar AutoFarm"
+btnParar.TextColor3 = Color3.fromRGB(255, 255, 255)
+btnParar.Font = Enum.Font.SourceSansBold
+btnParar.TextSize = 20
+
+local creditos = Instance.new("TextLabel", frame)
+creditos.Size = UDim2.new(1, 0, 0, 20)
+creditos.Position = UDim2.new(0, 0, 1, -20)
+creditos.BackgroundTransparency = 1
+creditos.Text = "FEITO POR RARO7ZX"
+creditos.Font = Enum.Font.SourceSansBold
+creditos.TextSize = 14
+
+spawn(function()
+	while true do
+		creditos.TextColor3 = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+		wait(0.1)
+	end
+end)
+
+local minimizado = false
+btnMinimizar.MouseButton1Click:Connect(function()
+	minimizado = not minimizado
+	frame.Size = minimizado and UDim2.new(0, 220, 0, 30) or UDim2.new(0, 220, 0, 150)
+	frame.BackgroundTransparency = minimizado and 1 or 0.3
+	btnIniciar.Visible = not minimizado
+	btnParar.Visible = not minimizado
+	creditos.Visible = not minimizado
+end)
+
+btnFechar.MouseButton1Click:Connect(function()
+	autoFarmAtivo = false
+	autoPickupAtivo = false
+	gui:Destroy()
+end)
+
+-- FunÃ§Ãµes de Auto Pickup do primeiro script
+
+local function ativarPickup()
+	if not HRP then return end
+	for _, prompt in pairs(workspace:GetDescendants()) do
+		if prompt:IsA("ProximityPrompt") then
+			local distancia = (HRP.Position - prompt.Parent.Position).Magnitude
+			if distancia <= 10 and not promptsAtivos[prompt] then
+				promptsAtivos[prompt] = true
+				spawn(function()
+					prompt:InputHoldBegin()
+				end)
+			end
+		end
+	end
+end
+
+local function desativarPickup()
+	for prompt, ativo in pairs(promptsAtivos) do
+		if ativo then
+			spawn(function()
+				prompt:InputHoldEnd()
+			end)
+		end
+	end
+	promptsAtivos = {}
+end
+
+local function monitorarPickup()
+	autoPickupAtivo = true
+	while autoPickupAtivo do
+		local parado = HRP.Velocity.Magnitude < 1
+
+		if parado then
+			ativarPickup()
+		else
+			desativarPickup()
+		end
+		wait(0.3)
+	end
+	desativarPickup()
+end
+
+local function iniciarAutoPickup()
+	if autoPickupAtivo then return end
+	spawn(monitorarPickup)
+end
+
+local function pararAutoPickup()
+	autoPickupAtivo = false
+end
+
+-- MovimentaÃ§Ã£o com Tween
+local function moverPara(pos)
+	if not HRP then return end
+	local distancia = (HRP.Position - pos).Magnitude
+	local duracao = distancia / velocidade
+	local tween = TweenService:Create(HRP, TweenInfo.new(duracao, Enum.EasingStyle.Linear), {CFrame = CFrame.new(pos)})
+	tween:Play()
+	tween.Completed:Wait()
+end
+
+local function spawnarCaminhaoLixeiro()
+	local args = {"Lixeiro", "GaragemLIXEIRO"}
+	SpawnCarEvent:FireServer(unpack(args))
+end
+
+local function AutoFarm()
+	if autoFarmAtivo then return end
+	autoFarmAtivo = true
+	spawnarCaminhaoLixeiro()
+
+	spawn(function()
+		while autoFarmAtivo do
+			for _, rota in ipairs(rotas) do
+				if not autoFarmAtivo then return end
+
+				moverPara(rota.inicio)
+				wait(tempoEspera)
+
+				iniciarAutoPickup()
+				wait(tempoEspera)
+				pararAutoPickup()
+
+				moverPara(rota.fim)
+				wait(tempoEspera)
+
+				iniciarAutoPickup()
+				wait(tempoEspera)
+				pararAutoPickup()
+			end
+		end
+	end)
+end
+
+btnIniciar.MouseButton1Click:Connect(AutoFarm)
+btnParar.MouseButton1Click:Connect(function()
+	autoFarmAtivo = false
+	autoPickupAtivo = false
+end)
